@@ -34,32 +34,35 @@ app.use(function (req, res, next) {
 });
 
 db.sequelize.sync().then(async req => {
-  Type.create({
-    type: 'Функциональное',
-  });
-  Type.create({
-    type: 'Нефункциональное',
-  });
-  Priority.create({
-    priority: 'Высокий',
-  });
-  Priority.create({
-    priority: 'Средний',
-  });
-  Priority.create({
-    priority: 'Низкий',
-  });
-  Status.create({
-    status: 'Выполнено',
-  });
-  Status.create({
-    status: 'В работе',
-  });
-  Status.create({
-    status: 'Новое',
-  });
-  Status.create({
-    status: 'Отложено',
-  });
+  const types = await Type.findAll({ raw: true });
+  if (types.length == 0) {
+    Type.create({
+      type: 'Функциональное',
+    });
+    Type.create({
+      type: 'Нефункциональное',
+    });
+    Priority.create({
+      priority: 'Высокий',
+    });
+    Priority.create({
+      priority: 'Средний',
+    });
+    Priority.create({
+      priority: 'Низкий',
+    });
+    Status.create({
+      status: 'Выполнено',
+    });
+    Status.create({
+      status: 'В работе',
+    });
+    Status.create({
+      status: 'Новое',
+    });
+    Status.create({
+      status: 'Отложено',
+    });
+  }
   app.listen(PORT, console.log(`Listening on ${PORT}`));
 });
