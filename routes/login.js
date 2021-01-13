@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const verify = require('./middleware');
+
 const users = [
   {
     id: 1,
@@ -24,6 +26,13 @@ router.post('/login', async (req, res) => {
   res
     .header('authorization', token)
     .json({ token, id: user.id, username: user.username, role: user.role });
+});
+
+router.get('/users', verify, async (req, res) => {
+  let us = users.map(user => {
+    return { id: user.id, username: user.username, role: user.role };
+  });
+  res.status(200).json(us);
 });
 
 module.exports = router;
